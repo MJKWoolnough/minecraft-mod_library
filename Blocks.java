@@ -58,4 +58,20 @@ public class Blocks {
 		}
 		return null;
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof Blocks)) {
+			return false;
+		} 
+		BlockData b = (BlockData) o;
+		if (b.blockId == this.blockId && b.metadata == this.metadata) {
+			if (b.nbtData == null && this.nbtData == null) {
+				return true;
+			} else if (b.nbtData != null && this.nbtData != null) {
+				return b.nbtData.equals(this.nbtData);
+			}
+		}
+		return false;
+	}
 }
