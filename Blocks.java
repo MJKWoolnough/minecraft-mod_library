@@ -1,12 +1,12 @@
 package mw.library;
 
+import codechicken.multipart.MultipartHelper;
 import mw.editor.BlockData;
-import mw.editor.ModEditor;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import codechicken.multipart.MultipartHelper;
+
 
 public class Blocks {
 	
