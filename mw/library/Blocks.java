@@ -15,6 +15,8 @@ public class Blocks {
 	public int blockId;
 	public int metadata;
 	public NBTTagCompound nbtData;
+
+	public boolean notifyChange = true;
 	
 	public Blocks get(World world, int x, int y, int z) {
 		this.blockId = world.getBlockId(x, y, z);
@@ -42,7 +44,9 @@ public class Blocks {
 			}
 			world.markBlockForUpdate(x, y, z);
 		}
-		world.setBlockMetadataWithNotify(x, y, z, metadata, 3);
+		if (this.notifyChange) {
+			world.setBlockMetadataWithNotify(x, y, z, metadata, 3);
+		}
 	}
 	
 	private TileEntity getTileEntity(World world, int x, int y, int z) {
@@ -57,6 +61,26 @@ public class Blocks {
 			return TileEntity.createAndLoadEntity(nbtData);
 		}
 		return null;
+	}
+	
+	public Blocks rotate90() {
+		return BlockManipulator.rotate90(this);
+	}
+	
+	public Blocks rotate180() {
+		return BlockManipulator.rotate180(this);
+	}
+	
+	public Blocks rotate270() {
+		return BlockManipulator.rotate270(this);
+	}
+	
+	public Blocks mirrorX() {
+		return BlockManipulator.mirrorX(this);
+	}
+	
+	public Blocks mirrorZ() {
+		return BlockManipulator.mirrorZ(this);
 	}
 	
 	@Override
