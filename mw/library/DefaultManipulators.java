@@ -2,7 +2,7 @@ package mw.library;
 
 import net.minecraft.block.Block;
 
-public class DefaultManipulators {
+public final class DefaultManipulators {
 	
 	public static class Default implements IBlockManipulator {
 		@Override
@@ -51,158 +51,113 @@ public class DefaultManipulators {
 		}
 	}
 	
-	public abstract static class NoMirror implements IBlockManipulator {
+	//Manipulates the lower bits for directionality
+	public static class LB implements IBlockManipulator {
+		
+		private final int NORTH;
+		private final int EAST;
+		private final int SOUTH;
+		private final int WEST;
+		private final int lowerBitMask;
+		private final int upperBitMask;
+		
+		public LB(int bits, int n, int e, int s, int w) {
+			this.NORTH = n;
+			this.EAST = e;
+			this.SOUTH = s;
+			this.WEST = w;
+			
+			int lbm = 0;
+			
+			for (int i = 0; i < bits; i++) {
+				lbm = (lbm << 1) | 1;
+			}
+			
+			this.lowerBitMask = lbm;
+			this.upperBitMask = (~lbm) & 15;
+		}
+
+		@Override
+		public Blocks rotate90(Blocks block) {
+			int metadata = block.metadata & this.lowerBitMask;
+			block.metadata &= this.upperBitMask;
+			if (metadata == this.NORTH) {
+				block.metadata |= EAST;
+			} else if (metadata == this.EAST) {
+				block.metadata |= SOUTH;
+			} else if (metadata == this.SOUTH) {
+				block.metadata |= WEST;
+			} else if (metadata == this.WEST) {
+				block.metadata |= NORTH;
+			} else {
+				block.metadata |= metadata;
+			}
+			return block;
+		}
+
+		@Override
+		public Blocks rotate180(Blocks block) {
+			int metadata = block.metadata & this.lowerBitMask;
+			block.metadata &= this.upperBitMask;
+			if (metadata == NORTH) {
+				block.metadata |= SOUTH;
+			} else if (metadata == EAST) {
+				block.metadata |= WEST;
+			} else if (metadata == SOUTH) {
+				block.metadata |= NORTH;
+			} else if (metadata == WEST) {
+				block.metadata |= EAST;
+			} else {
+				block.metadata |= metadata;
+			}
+			return block;
+		}
+
+		@Override
+		public Blocks rotate270(Blocks block) {
+			int metadata = block.metadata & this.lowerBitMask;
+			block.metadata &= this.upperBitMask;
+			if (metadata == NORTH) {
+				block.metadata |= WEST;
+			} else if (metadata == EAST) {
+				block.metadata |= NORTH;
+			} else if (metadata == SOUTH) {
+				block.metadata |= EAST;
+			} else if (metadata == WEST) {
+				block.metadata |= SOUTH;
+			} else {
+				block.metadata |= metadata;
+			}
+			return block;
+		}
+
 		@Override
 		public Blocks mirrorX(Blocks block) {
-			return this.rotate180(block);
+			int metadata = block.metadata & this.lowerBitMask;
+			block.metadata &= this.upperBitMask;
+			if (metadata == EAST) {
+				block.metadata |= WEST;
+			} else if (metadata == WEST) {
+				block.metadata |= EAST;
+			} else {
+				block.metadata |= metadata;
+			}
+			return block;
 		}
 
 		@Override
 		public Blocks mirrorZ(Blocks block) {
-			return this.rotate180(block);
-		}
-	}
-	
-	//Manipulates the lower two bits for directionality
-	public static class LB2 extends NoMirror {
-		
-		private final int NORTH;
-		private final int EAST;
-		private final int SOUTH;
-		private final int WEST;
-		
-		public LB2(int n, int e, int s, int w) {
-			this.NORTH = n;
-			this.EAST = e;
-			this.SOUTH = s;
-			this.WEST = w;
-		}
-
-		@Override
-		public Blocks rotate90(Blocks block) {
-			int metadata = block.metadata & 3;
-			block.metadata &= 12;
-			if (metadata == this.NORTH) {
-				block.metadata |= EAST;
-			} else if (metadata == this.EAST) {
-				block.metadata |= SOUTH;
-			} else if (metadata == this.SOUTH) {
-				block.metadata |= WEST;
-			} else if (metadata == this.WEST) {
-				block.metadata |= NORTH;
-			} else {
-				block.metadata |= metadata;
-			}
-			return block;
-		}
-
-		@Override
-		public Blocks rotate180(Blocks block) {
-			int metadata = block.metadata & 3;
-			block.metadata &= 12;
+			int metadata = block.metadata & this.lowerBitMask;
+			block.metadata &= this.upperBitMask;
 			if (metadata == NORTH) {
 				block.metadata |= SOUTH;
-			} else if (metadata == EAST) {
-				block.metadata |= WEST;
 			} else if (metadata == SOUTH) {
 				block.metadata |= NORTH;
-			} else if (metadata == WEST) {
-				block.metadata |= WEST;
 			} else {
 				block.metadata |= metadata;
 			}
 			return block;
-		}
-
-		@Override
-		public Blocks rotate270(Blocks block) {
-			int metadata = block.metadata & 3;
-			block.metadata &= 12;
-			if (metadata == NORTH) {
-				block.metadata |= WEST;
-			} else if (metadata == EAST) {
-				block.metadata |= NORTH;
-			} else if (metadata == SOUTH) {
-				block.metadata |= EAST;
-			} else if (metadata == WEST) {
-				block.metadata |= SOUTH;
-			} else {
-				block.metadata |= metadata;
-			}
-			return block;
-		}
-				
-	}
-	
-	//Manipulates the three lower metadata bits for directionality
-	public static class LB3 extends NoMirror {
-		
-		private final int NORTH;
-		private final int EAST;
-		private final int SOUTH;
-		private final int WEST;
-		
-		public LB3(int n, int e, int s, int w) {
-			this.NORTH = n;
-			this.EAST = e;
-			this.SOUTH = s;
-			this.WEST = w;
-		}
-
-		@Override
-		public Blocks rotate90(Blocks block) {
-			int metadata = block.metadata & 7;
-			block.metadata &= 8;
-			if (metadata == this.NORTH) {
-				block.metadata |= EAST;
-			} else if (metadata == this.EAST) {
-				block.metadata |= SOUTH;
-			} else if (metadata == this.SOUTH) {
-				block.metadata |= WEST;
-			} else if (metadata == this.WEST) {
-				block.metadata |= NORTH;
-			} else {
-				block.metadata |= metadata;
-			}
-			return block;
-		}
-
-		@Override
-		public Blocks rotate180(Blocks block) {
-			int metadata = block.metadata & 7;
-			block.metadata &= 8;
-			if (metadata == NORTH) {
-				block.metadata |= SOUTH;
-			} else if (metadata == EAST) {
-				block.metadata |= WEST;
-			} else if (metadata == SOUTH) {
-				block.metadata |= NORTH;
-			} else if (metadata == WEST) {
-				block.metadata |= WEST;
-			} else {
-				block.metadata |= metadata;
-			}
-			return block;
-		}
-
-		@Override
-		public Blocks rotate270(Blocks block) {
-			int metadata = block.metadata & 7;
-			block.metadata &= 8;
-			if (metadata == NORTH) {
-				block.metadata |= WEST;
-			} else if (metadata == EAST) {
-				block.metadata |= NORTH;
-			} else if (metadata == SOUTH) {
-				block.metadata |= EAST;
-			} else if (metadata == WEST) {
-				block.metadata |= SOUTH;
-			} else {
-				block.metadata |= metadata;
-			}
-			return block;
-		}
-				
+		}		
 	}
 	
 	public static class Sign implements IBlockManipulator {
@@ -232,7 +187,7 @@ public class DefaultManipulators {
 
 		@Override
 		public Blocks mirrorZ(Blocks block) {
-			block.metadata = (8 - (block.metadata & 3)) | (block.metadata & 8);
+			block.metadata = (8 - (block.metadata & 7)) | (block.metadata & 8);
 			return block;
 		}
 		
@@ -847,11 +802,11 @@ public class DefaultManipulators {
 		}
 	}
 	
-	public static class Skull extends LB3 {
+	public static class Skull extends LB {
 		private static final String rotationString = "Rot";
 		
 		public Skull() {
-			super(2, 4, 3, 5);
+			super(3, 2, 4, 3, 5);
 		}
 		
 		@Override
@@ -905,14 +860,14 @@ public class DefaultManipulators {
 	protected static void Register() {
 		BlockManipulator.registerManipulator(Block.wood, new Log());
 		
-		IBlockManipulator uewsn = new LB3(4, 1, 3, 2);
+		IBlockManipulator uewsn = new LB(3, 4, 1, 3, 2);
 		BlockManipulator.registerManipulator(Block.torchWood, uewsn);
 		BlockManipulator.registerManipulator(Block.torchRedstoneIdle, uewsn);
 		BlockManipulator.registerManipulator(Block.torchRedstoneActive, uewsn);
 		BlockManipulator.registerManipulator(Block.stoneButton, uewsn);
 		BlockManipulator.registerManipulator(Block.woodenButton, uewsn);
 		
-		IBlockManipulator nesw = new LB2(0, 1, 2, 3);
+		IBlockManipulator nesw = new LB(2, 0, 1, 2, 3);
 		BlockManipulator.registerManipulator(Block.bed, nesw);
 		BlockManipulator.registerManipulator(Block.redstoneRepeaterIdle, nesw);
 		BlockManipulator.registerManipulator(Block.redstoneRepeaterActive, nesw);
@@ -921,7 +876,7 @@ public class DefaultManipulators {
 		BlockManipulator.registerManipulator(Block.cocoaPlant, nesw);
 		BlockManipulator.registerManipulator(Block.anvil, nesw);
 		
-		IBlockManipulator uunswe = new LB3(2, 5, 3, 4);
+		IBlockManipulator uunswe = new LB(3, 2, 5, 3, 4);
 		BlockManipulator.registerManipulator(Block.pistonBase, uunswe);
 		BlockManipulator.registerManipulator(Block.pistonExtension, uunswe);
 		BlockManipulator.registerManipulator(Block.pistonMoving, uunswe);
@@ -938,7 +893,7 @@ public class DefaultManipulators {
 		BlockManipulator.registerManipulator(Block.chestTrapped, uunswe);
 		
 		
-		IBlockManipulator ewsn = new LB2(3, 0, 2, 1);
+		IBlockManipulator ewsn = new LB(2, 3, 0, 2, 1);
 		BlockManipulator.registerManipulator(Block.stairsWoodOak, ewsn);
 		BlockManipulator.registerManipulator(Block.stairsCobblestone, ewsn);
 		BlockManipulator.registerManipulator(Block.stairsBrick, ewsn);
@@ -963,14 +918,14 @@ public class DefaultManipulators {
 		
 		BlockManipulator.registerManipulator(Block.lever, new Lever());
 		
-		IBlockManipulator swne = new LB2(2, 3, 0, 1);
+		IBlockManipulator swne = new LB(2, 2, 3, 0, 1);
 		BlockManipulator.registerManipulator(Block.pumpkin, swne);
 		BlockManipulator.registerManipulator(Block.pumpkinLantern, swne);
 		BlockManipulator.registerManipulator(Block.fenceGate, swne);
 		BlockManipulator.registerManipulator(Block.endPortalFrame, swne);
 		BlockManipulator.registerManipulator(Block.tripWireSource, swne);
 		
-		IBlockManipulator snew = new LB2(1, 2, 0, 3);
+		IBlockManipulator snew = new LB(2, 1, 2, 0, 3);
 		BlockManipulator.registerManipulator(Block.trapdoor, snew);
 		
 		IBlockManipulator mushroom = new Mushroom();
