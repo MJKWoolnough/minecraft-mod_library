@@ -51,36 +51,30 @@ public final class DefaultManipulators {
 		}
 	}
 	
-	//Manipulates the lower bits for directionality
-	public static class LB implements IBlockManipulator {
+	//Manipulates the bits for directionality
+	public static class Bits implements IBlockManipulator {
 		
 		private final int NORTH;
 		private final int EAST;
 		private final int SOUTH;
 		private final int WEST;
-		private final int lowerBitMask;
-		private final int upperBitMask;
+		private final int directionBitMask;
+		private final int otherBitMask;
 		
-		public LB(int bits, int n, int e, int s, int w) {
+		public Bits(int mask, int n, int e, int s, int w) {
 			this.NORTH = n;
 			this.EAST = e;
 			this.SOUTH = s;
 			this.WEST = w;
 			
-			int lbm = 0;
-			
-			for (int i = 0; i < bits; i++) {
-				lbm = (lbm << 1) | 1;
-			}
-			
-			this.lowerBitMask = lbm;
-			this.upperBitMask = (~lbm) & 15;
+			this.directionBitMask = mask;
+			this.otherBitMask = (~mask) & 15;
 		}
 
 		@Override
 		public Blocks rotate90(Blocks block) {
-			int metadata = block.metadata & this.lowerBitMask;
-			block.metadata &= this.upperBitMask;
+			int metadata = block.metadata & this.directionBitMask;
+			block.metadata &= this.otherBitMask;
 			if (metadata == this.NORTH) {
 				block.metadata |= EAST;
 			} else if (metadata == this.EAST) {
@@ -97,8 +91,8 @@ public final class DefaultManipulators {
 
 		@Override
 		public Blocks rotate180(Blocks block) {
-			int metadata = block.metadata & this.lowerBitMask;
-			block.metadata &= this.upperBitMask;
+			int metadata = block.metadata & this.directionBitMask;
+			block.metadata &= this.otherBitMask;
 			if (metadata == NORTH) {
 				block.metadata |= SOUTH;
 			} else if (metadata == EAST) {
@@ -115,8 +109,8 @@ public final class DefaultManipulators {
 
 		@Override
 		public Blocks rotate270(Blocks block) {
-			int metadata = block.metadata & this.lowerBitMask;
-			block.metadata &= this.upperBitMask;
+			int metadata = block.metadata & this.directionBitMask;
+			block.metadata &= this.otherBitMask;
 			if (metadata == NORTH) {
 				block.metadata |= WEST;
 			} else if (metadata == EAST) {
@@ -133,8 +127,8 @@ public final class DefaultManipulators {
 
 		@Override
 		public Blocks mirrorX(Blocks block) {
-			int metadata = block.metadata & this.lowerBitMask;
-			block.metadata &= this.upperBitMask;
+			int metadata = block.metadata & this.directionBitMask;
+			block.metadata &= this.otherBitMask;
 			if (metadata == EAST) {
 				block.metadata |= WEST;
 			} else if (metadata == WEST) {
@@ -147,8 +141,8 @@ public final class DefaultManipulators {
 
 		@Override
 		public Blocks mirrorZ(Blocks block) {
-			int metadata = block.metadata & this.lowerBitMask;
-			block.metadata &= this.upperBitMask;
+			int metadata = block.metadata & this.directionBitMask;
+			block.metadata &= this.otherBitMask;
 			if (metadata == NORTH) {
 				block.metadata |= SOUTH;
 			} else if (metadata == SOUTH) {
@@ -802,7 +796,7 @@ public final class DefaultManipulators {
 		}
 	}
 	
-	public static class Skull extends LB {
+	public static class Skull extends Bits {
 		private static final String rotationString = "Rot";
 		
 		public Skull() {
@@ -854,20 +848,19 @@ public final class DefaultManipulators {
 			block.nbtData.setByte(rotationString, (byte)((8 - (rot & 3)) | (rot & 8)));
 			return block;
 		}
-		
 	}
 	
 	protected static void Register() {
 		BlockManipulator.registerManipulator(Block.wood, new Log());
 		
-		IBlockManipulator uewsn = new LB(3, 4, 1, 3, 2);
+		IBlockManipulator uewsn = new Bits(7, 4, 1, 3, 2);
 		BlockManipulator.registerManipulator(Block.torchWood, uewsn);
 		BlockManipulator.registerManipulator(Block.torchRedstoneIdle, uewsn);
 		BlockManipulator.registerManipulator(Block.torchRedstoneActive, uewsn);
 		BlockManipulator.registerManipulator(Block.stoneButton, uewsn);
 		BlockManipulator.registerManipulator(Block.woodenButton, uewsn);
 		
-		IBlockManipulator nesw = new LB(2, 0, 1, 2, 3);
+		IBlockManipulator nesw = new Bits(3, 0, 1, 2, 3);
 		BlockManipulator.registerManipulator(Block.bed, nesw);
 		BlockManipulator.registerManipulator(Block.redstoneRepeaterIdle, nesw);
 		BlockManipulator.registerManipulator(Block.redstoneRepeaterActive, nesw);
@@ -876,7 +869,7 @@ public final class DefaultManipulators {
 		BlockManipulator.registerManipulator(Block.cocoaPlant, nesw);
 		BlockManipulator.registerManipulator(Block.anvil, nesw);
 		
-		IBlockManipulator uunswe = new LB(3, 2, 5, 3, 4);
+		IBlockManipulator uunswe = new Bits(7, 2, 5, 3, 4);
 		BlockManipulator.registerManipulator(Block.pistonBase, uunswe);
 		BlockManipulator.registerManipulator(Block.pistonExtension, uunswe);
 		BlockManipulator.registerManipulator(Block.pistonMoving, uunswe);
@@ -893,7 +886,7 @@ public final class DefaultManipulators {
 		BlockManipulator.registerManipulator(Block.chestTrapped, uunswe);
 		
 		
-		IBlockManipulator ewsn = new LB(2, 3, 0, 2, 1);
+		IBlockManipulator ewsn = new Bits(3, 3, 0, 2, 1);
 		BlockManipulator.registerManipulator(Block.stairsWoodOak, ewsn);
 		BlockManipulator.registerManipulator(Block.stairsCobblestone, ewsn);
 		BlockManipulator.registerManipulator(Block.stairsBrick, ewsn);
@@ -918,14 +911,14 @@ public final class DefaultManipulators {
 		
 		BlockManipulator.registerManipulator(Block.lever, new Lever());
 		
-		IBlockManipulator swne = new LB(2, 2, 3, 0, 1);
+		IBlockManipulator swne = new Bits(3, 2, 3, 0, 1);
 		BlockManipulator.registerManipulator(Block.pumpkin, swne);
 		BlockManipulator.registerManipulator(Block.pumpkinLantern, swne);
 		BlockManipulator.registerManipulator(Block.fenceGate, swne);
 		BlockManipulator.registerManipulator(Block.endPortalFrame, swne);
 		BlockManipulator.registerManipulator(Block.tripWireSource, swne);
 		
-		IBlockManipulator snew = new LB(2, 1, 2, 0, 3);
+		IBlockManipulator snew = new Bits(3, 1, 2, 0, 3);
 		BlockManipulator.registerManipulator(Block.trapdoor, snew);
 		
 		IBlockManipulator mushroom = new Mushroom();

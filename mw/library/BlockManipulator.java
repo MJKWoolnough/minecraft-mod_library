@@ -8,7 +8,10 @@ public class BlockManipulator {
 	private static final IBlockManipulator defaultManipulator = new DefaultManipulators.Default();
 	
 	public static boolean registerManipulator(Block block, IBlockManipulator bm) {
-		int blockId = block.blockID;
+		return registerManipulator(block.blockID, bm);
+	}
+	
+	public static boolean registerManipulator(int blockId, IBlockManipulator bm) {
 		if (manipulatorList[blockId] != null) {
 			return false;
 		}
