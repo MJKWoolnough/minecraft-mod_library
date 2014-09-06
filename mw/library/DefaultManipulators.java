@@ -54,21 +54,21 @@ public final class DefaultManipulators {
 	//Manipulates the bits for directionality
 	public static class Bits implements IBlockManipulator {
 		
-		private final int NORTH;
-		private final int EAST;
-		private final int SOUTH;
-		private final int WEST;
-		private final int directionBitMask;
-		private final int otherBitMask;
+		private final byte NORTH;
+		private final byte EAST;
+		private final byte SOUTH;
+		private final byte WEST;
+		private final byte directionBitMask;
+		private final byte otherBitMask;
 		
-		public Bits(int mask, int n, int e, int s, int w) {
-			this.NORTH = n;
-			this.EAST = e;
-			this.SOUTH = s;
-			this.WEST = w;
+		public Bits(int i, int j, int k, int l, int m) {
+			this.NORTH = (byte) j;
+			this.EAST = (byte) k;
+			this.SOUTH = (byte) l;
+			this.WEST = (byte) m;
 			
-			this.directionBitMask = mask;
-			this.otherBitMask = (~mask) & 15;
+			this.directionBitMask = (byte) i;
+			this.otherBitMask = (byte) ((~i) & 15);
 		}
 
 		@Override
@@ -240,16 +240,16 @@ public final class DefaultManipulators {
 	}
 	
 	public static class Rail implements IBlockManipulator {
-		private static final int NORTHSOUTH = 0;
-		private static final int EASTWEST = 1;
-		private static final int EAST = 2;
-		private static final int WEST = 3;
-		private static final int NORTH = 4;
-		private static final int SOUTH = 5;
-		private static final int NORTHWEST = 6;
-		private static final int NORTHEAST = 7;
-		private static final int SOUTHEAST = 8;
-		private static final int SOUTHWEST = 9;
+		private static final byte NORTHSOUTH = 0;
+		private static final byte EASTWEST = 1;
+		private static final byte EAST = 2;
+		private static final byte WEST = 3;
+		private static final byte NORTH = 4;
+		private static final byte SOUTH = 5;
+		private static final byte NORTHWEST = 6;
+		private static final byte NORTHEAST = 7;
+		private static final byte SOUTHEAST = 8;
+		private static final byte SOUTHWEST = 9;
 		
 		@Override
 		public Blocks rotate90(Blocks block) {
@@ -418,14 +418,14 @@ public final class DefaultManipulators {
 	}
 	
 	public static class Lever implements IBlockManipulator {
-		private static final int NORTH = 4;
-		private static final int EAST = 1;
-		private static final int SOUTH = 3;
-		private static final int WEST = 2;
-		private static final int GROUNDNORTHSOUTH = 5;
-		private static final int GROUNDEASTWEST = 6;
-		private static final int CEILINGNORTHSOUTH = 7;
-		private static final int CEILINGEASTWEST = 0;
+		private static final byte NORTH = 4;
+		private static final byte EAST = 1;
+		private static final byte SOUTH = 3;
+		private static final byte WEST = 2;
+		private static final byte GROUNDNORTHSOUTH = 5;
+		private static final byte GROUNDEASTWEST = 6;
+		private static final byte CEILINGNORTHSOUTH = 7;
+		private static final byte CEILINGEASTWEST = 0;
 		
 		@Override
 		public Blocks rotate90(Blocks block) {
@@ -546,14 +546,14 @@ public final class DefaultManipulators {
 	}
 	
 	public static class Mushroom implements IBlockManipulator {
-		private static final int NORTH = 2;
-		private static final int NORTHEAST = 3;
-		private static final int EAST = 6;
-		private static final int SOUTHEAST = 9;
-		private static final int SOUTH = 8;
-		private static final int SOUTHWEST = 7;
-		private static final int WEST = 4;
-		private static final int NORTHWEST = 1;
+		private static final byte NORTH = 2;
+		private static final byte NORTHEAST = 3;
+		private static final byte EAST = 6;
+		private static final byte SOUTHEAST = 9;
+		private static final byte SOUTH = 8;
+		private static final byte SOUTHWEST = 7;
+		private static final byte WEST = 4;
+		private static final byte NORTHWEST = 1;
 		@Override
 		public Blocks rotate90(Blocks block) {
 			switch (block.metadata) {
@@ -699,10 +699,10 @@ public final class DefaultManipulators {
 	}
 	
 	public static class Vines implements IBlockManipulator {
-		private static final int NORTH = 4;
-		private static final int EAST = 8;
-		private static final int SOUTH = 1;
-		private static final int WEST = 2;
+		private static final byte NORTH = 4;
+		private static final byte EAST = 8;
+		private static final byte SOUTH = 1;
+		private static final byte WEST = 2;
 		
 		@Override
 		public Blocks rotate90(Blocks block) {
