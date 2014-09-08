@@ -18,15 +18,12 @@ public abstract class PacketHandler implements IPacketHandler {
 		this.channel = channel;
 	}
 	
-	abstract public void handlePacket(int packetId, ByteArrayDataInput in, Player player);
+	abstract public void handlePacket(byte packetId, ByteArrayDataInput in, Player player);
 	
 	@Override
 	public final void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player) {
 		ByteArrayDataInput in = ByteStreams.newDataInput(packet.data);
-		int packetId = in.readUnsignedByte();
-		try {
-			this.handlePacket(packetId, in, player);
-		} catch(Exception e) {}
+		this.handlePacket((byte) in.readUnsignedByte(), in, player);
 		return;
 	}
 	
