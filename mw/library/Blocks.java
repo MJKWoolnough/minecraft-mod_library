@@ -83,12 +83,7 @@ public class Blocks {
 		return BlockManipulator.mirrorZ(this);
 	}
 	
-	@Override
-	public boolean equals(Object o) {
-		if (!(o instanceof Blocks)) {
-			return false;
-		} 
-		BlockData b = (BlockData) o;
+	public boolean equals(Blocks b) {
 		if (b.blockId == this.blockId && b.metadata == this.metadata) {
 			if (b.nbtData == null && this.nbtData == null) {
 				return true;
@@ -97,5 +92,13 @@ public class Blocks {
 			}
 		}
 		return false;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof Blocks)) {
+			return false;
+		} 
+		return this.equals((Blocks) o);
 	}
 }
