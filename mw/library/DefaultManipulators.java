@@ -3,8 +3,9 @@ package mw.library;
 import net.minecraft.block.Block;
 
 public final class DefaultManipulators {
-	
+
 	public static class Default implements IBlockManipulator {
+
 		@Override
 		public Blocks rotate90(Blocks block) {
 			return block;
@@ -30,8 +31,9 @@ public final class DefaultManipulators {
 			return block;
 		}
 	}
-	
+
 	public static class Log extends Default {
+
 		@Override
 		public Blocks rotate90(Blocks block) {
 			switch (block.metadata & 12) {
@@ -50,23 +52,23 @@ public final class DefaultManipulators {
 			return this.rotate90(block);
 		}
 	}
-	
-	//Manipulates the bits for directionality
+
+	// Manipulates the bits for directionality
 	public static class Bits implements IBlockManipulator {
-		
-		private final byte NORTH;
-		private final byte EAST;
-		private final byte SOUTH;
-		private final byte WEST;
-		private final byte directionBitMask;
-		private final byte otherBitMask;
-		
+
+		private final byte	NORTH;
+		private final byte	EAST;
+		private final byte	SOUTH;
+		private final byte	WEST;
+		private final byte	directionBitMask;
+		private final byte	otherBitMask;
+
 		public Bits(int i, int j, int k, int l, int m) {
 			this.NORTH = (byte) j;
 			this.EAST = (byte) k;
 			this.SOUTH = (byte) l;
 			this.WEST = (byte) m;
-			
+
 			this.directionBitMask = (byte) i;
 			this.otherBitMask = (byte) ((~i) & 15);
 		}
@@ -151,13 +153,14 @@ public final class DefaultManipulators {
 				block.metadata |= metadata;
 			}
 			return block;
-		}		
+		}
 	}
-	
+
 	public static class Sign implements IBlockManipulator {
+
 		@Override
 		public Blocks rotate90(Blocks block) {
-			block.metadata = (block.metadata + 4) & 15; 
+			block.metadata = (block.metadata + 4) & 15;
 			return block;
 		}
 
@@ -184,14 +187,15 @@ public final class DefaultManipulators {
 			block.metadata = (8 - (block.metadata & 7)) | (block.metadata & 8);
 			return block;
 		}
-		
+
 	}
-	
+
 	public static class Door implements IBlockManipulator {
+
 		@Override
 		public Blocks rotate90(Blocks block) {
 			if ((block.metadata & 8) == 0) {
-				block.metadata = ((block.metadata & 3) + 1) & 3 | (block.metadata & 4); 
+				block.metadata = ((block.metadata & 3) + 1) & 3 | (block.metadata & 4);
 			}
 			return block;
 		}
@@ -199,7 +203,7 @@ public final class DefaultManipulators {
 		@Override
 		public Blocks rotate180(Blocks block) {
 			if ((block.metadata & 8) == 0) {
-				block.metadata = ((block.metadata & 3) + 2) & 3 | (block.metadata & 4); 
+				block.metadata = ((block.metadata & 3) + 2) & 3 | (block.metadata & 4);
 			}
 			return block;
 		}
@@ -207,7 +211,7 @@ public final class DefaultManipulators {
 		@Override
 		public Blocks rotate270(Blocks block) {
 			if ((block.metadata & 8) == 0) {
-				block.metadata = ((block.metadata & 3) + 3) & 3 | (block.metadata & 4); 
+				block.metadata = ((block.metadata & 3) + 3) & 3 | (block.metadata & 4);
 			}
 			return block;
 		}
@@ -238,22 +242,23 @@ public final class DefaultManipulators {
 			return block;
 		}
 	}
-	
+
 	public static class Rail implements IBlockManipulator {
-		private static final byte NORTHSOUTH = 0;
-		private static final byte EASTWEST = 1;
-		private static final byte EAST = 2;
-		private static final byte WEST = 3;
-		private static final byte NORTH = 4;
-		private static final byte SOUTH = 5;
-		private static final byte NORTHWEST = 6;
-		private static final byte NORTHEAST = 7;
-		private static final byte SOUTHEAST = 8;
-		private static final byte SOUTHWEST = 9;
-		
+
+		private static final byte	NORTHSOUTH	= 0;
+		private static final byte	EASTWEST	= 1;
+		private static final byte	EAST		= 2;
+		private static final byte	WEST		= 3;
+		private static final byte	NORTH		= 4;
+		private static final byte	SOUTH		= 5;
+		private static final byte	NORTHWEST	= 6;
+		private static final byte	NORTHEAST	= 7;
+		private static final byte	SOUTHEAST	= 8;
+		private static final byte	SOUTHWEST	= 9;
+
 		@Override
 		public Blocks rotate90(Blocks block) {
-			int powered = block.metadata & 8; 
+			int powered = block.metadata & 8;
 			switch (block.metadata & 7) {
 			case NORTHSOUTH:
 				block.metadata = EASTWEST;
@@ -292,7 +297,7 @@ public final class DefaultManipulators {
 
 		@Override
 		public Blocks rotate180(Blocks block) {
-			int powered = block.metadata & 8; 
+			int powered = block.metadata & 8;
 			switch (block.metadata & 7) {
 			case EAST:
 				block.metadata = WEST;
@@ -325,7 +330,7 @@ public final class DefaultManipulators {
 
 		@Override
 		public Blocks rotate270(Blocks block) {
-			int powered = block.metadata & 8; 
+			int powered = block.metadata & 8;
 			switch (block.metadata & 7) {
 			case NORTHSOUTH:
 				block.metadata = EASTWEST;
@@ -364,7 +369,7 @@ public final class DefaultManipulators {
 
 		@Override
 		public Blocks mirrorX(Blocks block) {
-			int powered = block.metadata & 8; 
+			int powered = block.metadata & 8;
 			switch (block.metadata & 7) {
 			case EAST:
 				block.metadata = WEST;
@@ -391,7 +396,7 @@ public final class DefaultManipulators {
 
 		@Override
 		public Blocks mirrorZ(Blocks block) {
-			int powered = block.metadata & 8; 
+			int powered = block.metadata & 8;
 			switch (block.metadata & 7) {
 			case NORTH:
 				block.metadata = SOUTH;
@@ -416,17 +421,18 @@ public final class DefaultManipulators {
 			return block;
 		}
 	}
-	
+
 	public static class Lever implements IBlockManipulator {
-		private static final byte NORTH = 4;
-		private static final byte EAST = 1;
-		private static final byte SOUTH = 3;
-		private static final byte WEST = 2;
-		private static final byte GROUNDNORTHSOUTH = 5;
-		private static final byte GROUNDEASTWEST = 6;
-		private static final byte CEILINGNORTHSOUTH = 7;
-		private static final byte CEILINGEASTWEST = 0;
-		
+
+		private static final byte	NORTH			= 4;
+		private static final byte	EAST			= 1;
+		private static final byte	SOUTH			= 3;
+		private static final byte	WEST			= 2;
+		private static final byte	GROUNDNORTHSOUTH	= 5;
+		private static final byte	GROUNDEASTWEST		= 6;
+		private static final byte	CEILINGNORTHSOUTH	= 7;
+		private static final byte	CEILINGEASTWEST		= 0;
+
 		@Override
 		public Blocks rotate90(Blocks block) {
 			int powered = block.metadata & 8;
@@ -454,7 +460,7 @@ public final class DefaultManipulators {
 				break;
 			case CEILINGEASTWEST:
 				block.metadata = CEILINGNORTHSOUTH;
-				break; 
+				break;
 			}
 			block.metadata |= powered;
 			return block;
@@ -508,7 +514,7 @@ public final class DefaultManipulators {
 				break;
 			case CEILINGEASTWEST:
 				block.metadata = CEILINGNORTHSOUTH;
-				break; 
+				break;
 			}
 			block.metadata |= powered;
 			return block;
@@ -544,16 +550,18 @@ public final class DefaultManipulators {
 			return block;
 		}
 	}
-	
+
 	public static class Mushroom implements IBlockManipulator {
-		private static final byte NORTH = 2;
-		private static final byte NORTHEAST = 3;
-		private static final byte EAST = 6;
-		private static final byte SOUTHEAST = 9;
-		private static final byte SOUTH = 8;
-		private static final byte SOUTHWEST = 7;
-		private static final byte WEST = 4;
-		private static final byte NORTHWEST = 1;
+
+		private static final byte	NORTH		= 2;
+		private static final byte	NORTHEAST	= 3;
+		private static final byte	EAST		= 6;
+		private static final byte	SOUTHEAST	= 9;
+		private static final byte	SOUTH		= 8;
+		private static final byte	SOUTHWEST	= 7;
+		private static final byte	WEST		= 4;
+		private static final byte	NORTHWEST	= 1;
+
 		@Override
 		public Blocks rotate90(Blocks block) {
 			switch (block.metadata) {
@@ -697,13 +705,14 @@ public final class DefaultManipulators {
 			return block;
 		}
 	}
-	
+
 	public static class Vines implements IBlockManipulator {
-		private static final byte NORTH = 4;
-		private static final byte EAST = 8;
-		private static final byte SOUTH = 1;
-		private static final byte WEST = 2;
-		
+
+		private static final byte	NORTH	= 4;
+		private static final byte	EAST	= 8;
+		private static final byte	SOUTH	= 1;
+		private static final byte	WEST	= 2;
+
 		@Override
 		public Blocks rotate90(Blocks block) {
 			int metadata = block.metadata;
@@ -722,6 +731,7 @@ public final class DefaultManipulators {
 			}
 			return block;
 		}
+
 		@Override
 		public Blocks rotate180(Blocks block) {
 			int metadata = block.metadata;
@@ -740,6 +750,7 @@ public final class DefaultManipulators {
 			}
 			return block;
 		}
+
 		@Override
 		public Blocks rotate270(Blocks block) {
 			int metadata = block.metadata;
@@ -758,6 +769,7 @@ public final class DefaultManipulators {
 			}
 			return block;
 		}
+
 		@Override
 		public Blocks mirrorX(Blocks block) {
 			int metadata = block.metadata;
@@ -776,6 +788,7 @@ public final class DefaultManipulators {
 			}
 			return block;
 		}
+
 		@Override
 		public Blocks mirrorZ(Blocks block) {
 			int metadata = block.metadata;
@@ -795,20 +808,21 @@ public final class DefaultManipulators {
 			return block;
 		}
 	}
-	
+
 	public static class Skull extends Bits {
-		private static final String rotationString = "Rot";
-		
+
+		private static final String	rotationString	= "Rot";
+
 		public Skull() {
 			super(3, 2, 4, 3, 5);
 		}
-		
+
 		@Override
 		public Blocks rotate90(Blocks block) {
 			if (block.metadata != 1) {
 				return super.rotate90(block);
 			}
-			block.nbtData.setByte(rotationString, (byte)((block.nbtData.getByte(rotationString) + 4) & 15));
+			block.nbtData.setByte(rotationString, (byte) ((block.nbtData.getByte(rotationString) + 4) & 15));
 			return block;
 		}
 
@@ -817,7 +831,7 @@ public final class DefaultManipulators {
 			if (block.metadata != 1) {
 				return super.rotate180(block);
 			}
-			block.nbtData.setByte(rotationString, (byte)((block.nbtData.getByte(rotationString) + 8) & 15));
+			block.nbtData.setByte(rotationString, (byte) ((block.nbtData.getByte(rotationString) + 8) & 15));
 			return block;
 		}
 
@@ -826,7 +840,7 @@ public final class DefaultManipulators {
 			if (block.metadata != 1) {
 				return super.rotate270(block);
 			}
-			block.nbtData.setByte(rotationString, (byte)((block.nbtData.getByte(rotationString) + 12) & 15));
+			block.nbtData.setByte(rotationString, (byte) ((block.nbtData.getByte(rotationString) + 12) & 15));
 			return block;
 		}
 
@@ -835,7 +849,7 @@ public final class DefaultManipulators {
 			if (block.metadata != 1) {
 				return super.mirrorX(block);
 			}
-			block.nbtData.setByte(rotationString, (byte)((16 - (block.nbtData.getByte(rotationString) & 3)) & 15));
+			block.nbtData.setByte(rotationString, (byte) ((16 - (block.nbtData.getByte(rotationString) & 3)) & 15));
 			return block;
 		}
 
@@ -845,21 +859,21 @@ public final class DefaultManipulators {
 				return super.mirrorZ(block);
 			}
 			byte rot = block.nbtData.getByte(rotationString);
-			block.nbtData.setByte(rotationString, (byte)((8 - (rot & 3)) | (rot & 8)));
+			block.nbtData.setByte(rotationString, (byte) ((8 - (rot & 3)) | (rot & 8)));
 			return block;
 		}
 	}
-	
+
 	protected static void Register() {
 		BlockManipulator.registerManipulator(Block.wood, new Log());
-		
+
 		IBlockManipulator uewsn = new Bits(7, 4, 1, 3, 2);
 		BlockManipulator.registerManipulator(Block.torchWood, uewsn);
 		BlockManipulator.registerManipulator(Block.torchRedstoneIdle, uewsn);
 		BlockManipulator.registerManipulator(Block.torchRedstoneActive, uewsn);
 		BlockManipulator.registerManipulator(Block.stoneButton, uewsn);
 		BlockManipulator.registerManipulator(Block.woodenButton, uewsn);
-		
+
 		IBlockManipulator nesw = new Bits(3, 0, 1, 2, 3);
 		BlockManipulator.registerManipulator(Block.bed, nesw);
 		BlockManipulator.registerManipulator(Block.redstoneRepeaterIdle, nesw);
@@ -868,7 +882,7 @@ public final class DefaultManipulators {
 		BlockManipulator.registerManipulator(Block.redstoneComparatorActive, nesw);
 		BlockManipulator.registerManipulator(Block.cocoaPlant, nesw);
 		BlockManipulator.registerManipulator(Block.anvil, nesw);
-		
+
 		IBlockManipulator uunswe = new Bits(7, 2, 5, 3, 4);
 		BlockManipulator.registerManipulator(Block.pistonBase, uunswe);
 		BlockManipulator.registerManipulator(Block.pistonExtension, uunswe);
@@ -884,9 +898,9 @@ public final class DefaultManipulators {
 		BlockManipulator.registerManipulator(Block.hopperBlock, uunswe);
 		BlockManipulator.registerManipulator(Block.enderChest, uunswe);
 		BlockManipulator.registerManipulator(Block.chestTrapped, uunswe);
-		//BlockManipulator.registerManipulator(Block.lockedChest, uunswe);
-		
-		
+		// BlockManipulator.registerManipulator(Block.lockedChest,
+		// uunswe);
+
 		IBlockManipulator ewsn = new Bits(3, 3, 0, 2, 1);
 		BlockManipulator.registerManipulator(Block.stairsWoodOak, ewsn);
 		BlockManipulator.registerManipulator(Block.stairsCobblestone, ewsn);
@@ -898,36 +912,36 @@ public final class DefaultManipulators {
 		BlockManipulator.registerManipulator(Block.stairsWoodBirch, ewsn);
 		BlockManipulator.registerManipulator(Block.stairsWoodJungle, ewsn);
 		BlockManipulator.registerManipulator(Block.stairsNetherQuartz, ewsn);
-		
+
 		BlockManipulator.registerManipulator(Block.signPost, new Sign());
-		
+
 		IBlockManipulator door = new Door();
 		BlockManipulator.registerManipulator(Block.doorWood, door);
 		BlockManipulator.registerManipulator(Block.doorIron, door);
-		
+
 		IBlockManipulator rail = new Rail();
 		BlockManipulator.registerManipulator(Block.rail, rail);
 		BlockManipulator.registerManipulator(Block.railPowered, rail);
 		BlockManipulator.registerManipulator(Block.railDetector, rail);
-		
+
 		BlockManipulator.registerManipulator(Block.lever, new Lever());
-		
+
 		IBlockManipulator swne = new Bits(3, 2, 3, 0, 1);
 		BlockManipulator.registerManipulator(Block.pumpkin, swne);
 		BlockManipulator.registerManipulator(Block.pumpkinLantern, swne);
 		BlockManipulator.registerManipulator(Block.fenceGate, swne);
 		BlockManipulator.registerManipulator(Block.endPortalFrame, swne);
 		BlockManipulator.registerManipulator(Block.tripWireSource, swne);
-		
+
 		IBlockManipulator snew = new Bits(3, 1, 2, 0, 3);
 		BlockManipulator.registerManipulator(Block.trapdoor, snew);
-		
+
 		IBlockManipulator mushroom = new Mushroom();
 		BlockManipulator.registerManipulator(Block.mushroomCapBrown, mushroom);
 		BlockManipulator.registerManipulator(Block.mushroomCapRed, mushroom);
-		
+
 		BlockManipulator.registerManipulator(Block.vine, new Vines());
-		
+
 		BlockManipulator.registerManipulator(Block.skull, new Skull());
 	}
 }
