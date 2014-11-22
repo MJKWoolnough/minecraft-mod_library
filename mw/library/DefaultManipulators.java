@@ -884,7 +884,7 @@ public final class DefaultManipulators {
 		BlockManipulator.registerManipulator(Block.hopperBlock, uunswe);
 		BlockManipulator.registerManipulator(Block.enderChest, uunswe);
 		BlockManipulator.registerManipulator(Block.chestTrapped, uunswe);
-		BlockManipulator.registerManipulator(Block.lockedChest, uunswe);
+		//BlockManipulator.registerManipulator(Block.lockedChest, uunswe);
 		
 		
 		IBlockManipulator ewsn = new Bits(3, 3, 0, 2, 1);
