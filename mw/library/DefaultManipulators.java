@@ -412,38 +412,13 @@ public final class DefaultManipulators {
 		}
 	}
 
-	public static class PowerableRail implements IBlockManipulator {
-
-		private static final byte	NORTHSOUTH	= 0;
-		private static final byte	EASTWEST	= 1;
-		private static final byte	EAST		= 2;
-		private static final byte	WEST		= 3;
-		private static final byte	NORTH		= 4;
-		private static final byte	SOUTH		= 5;
+	public static class PowerableRail extends Rail {
 
 		@Override
 		public Blocks rotate90(Blocks block) {
 			int powered = block.metadata & 8;
-			switch (block.metadata & 7) {
-			case NORTHSOUTH:
-				block.metadata = EASTWEST;
-				break;
-			case EASTWEST:
-				block.metadata = NORTHSOUTH;
-				break;
-			case EAST:
-				block.metadata = SOUTH;
-				break;
-			case WEST:
-				block.metadata = NORTH;
-				break;
-			case NORTH:
-				block.metadata = EAST;
-				break;
-			case SOUTH:
-				block.metadata = WEST;
-				break;
-			}
+			block.metadata &= 7;
+			super.rotate90(block);
 			block.metadata |= powered;
 			return block;
 		}
@@ -451,20 +426,8 @@ public final class DefaultManipulators {
 		@Override
 		public Blocks rotate180(Blocks block) {
 			int powered = block.metadata & 8;
-			switch (block.metadata & 7) {
-			case EAST:
-				block.metadata = WEST;
-				break;
-			case WEST:
-				block.metadata = EAST;
-				break;
-			case NORTH:
-				block.metadata = SOUTH;
-				break;
-			case SOUTH:
-				block.metadata = NORTH;
-				break;
-			}
+			block.metadata &= 7;
+			super.rotate180(block);
 			block.metadata |= powered;
 			return block;
 		}
@@ -472,26 +435,8 @@ public final class DefaultManipulators {
 		@Override
 		public Blocks rotate270(Blocks block) {
 			int powered = block.metadata & 8;
-			switch (block.metadata & 7) {
-			case NORTHSOUTH:
-				block.metadata = EASTWEST;
-				break;
-			case EASTWEST:
-				block.metadata = NORTHSOUTH;
-				break;
-			case EAST:
-				block.metadata = NORTH;
-				break;
-			case WEST:
-				block.metadata = SOUTH;
-				break;
-			case NORTH:
-				block.metadata = WEST;
-				break;
-			case SOUTH:
-				block.metadata = EAST;
-				break;
-			}
+			block.metadata &= 7;
+			super.rotate270(block);
 			block.metadata |= powered;
 			return block;
 		}
@@ -499,14 +444,8 @@ public final class DefaultManipulators {
 		@Override
 		public Blocks mirrorX(Blocks block) {
 			int powered = block.metadata & 8;
-			switch (block.metadata & 7) {
-			case EAST:
-				block.metadata = WEST;
-				break;
-			case WEST:
-				block.metadata = EAST;
-				break;
-			}
+			block.metadata &= 7;
+			super.mirrorX(block);
 			block.metadata |= powered;
 			return block;
 		}
@@ -514,14 +453,8 @@ public final class DefaultManipulators {
 		@Override
 		public Blocks mirrorZ(Blocks block) {
 			int powered = block.metadata & 8;
-			switch (block.metadata & 7) {
-			case NORTH:
-				block.metadata = SOUTH;
-				break;
-			case SOUTH:
-				block.metadata = NORTH;
-				break;
-			}
+			block.metadata &= 7;
+			super.mirrorZ(block);
 			block.metadata |= powered;
 			return block;
 		}
