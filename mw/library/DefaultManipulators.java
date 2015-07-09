@@ -852,7 +852,7 @@ public final class DefaultManipulators {
 		private static final String	rotationString	= "Rot";
 
 		public Skull() {
-			super(3, 2, 4, 3, 5);
+			super(7, 2, 4, 3, 5);
 		}
 
 		@Override
